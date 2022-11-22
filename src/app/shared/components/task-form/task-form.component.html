@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ task.id ? 'Editar ' : 'Nova ' }}tarefa</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+</div>
+<form #taskForm="ngForm" (ngSubmit)="onSave()">
+    <div class="modal-body">
+        <div class="alert alert-danger" role="alert" *ngIf="errMsg">
+            {{ errMsg }}
+        </div>
+        <div class="row">
+            <div class="mb-3">
+                <label for="subject" class="form-label">Nome <span class="text-danger">*</span></label>
+                <input id="subject" class="form-control" name="subject" [(ngModel)]="task.subject" required />
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descrição <span class="text-danger">*</span></label>
+                <textarea id="description" class="form-control" name="description" [(ngModel)]="task.description"
+                    required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="course" class="form-label">Usuário <span class="text-danger">*</span></label>
+                <input id="course" class="form-control" name="course" [(ngModel)]="task.user"
+                    [ngbTypeahead]="searchUsers" [inputFormatter]="userFormatter" placeholder="Digite para pesquisar"
+                    [resultFormatter]="userFormatter" [editable]="false" required />
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label">Situação <span class="text-danger">*</span></label>
+                <select class="form-control" [(ngModel)]="task.status.id" name="status" id="status" required="">
+                    <option *ngFor="let status of taskStatus" [value]="status.id">{{ status.name }}</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="is_urgent" class="form-label">Urgente <span class="text-danger">*</span></label>
+                <select class="form-control" [(ngModel)]="task.is_urgent" name="is_urgent" id="is_urgent" required="">
+                    <option [value]="1">Sim</option>
+                    <option [value]="0">Não</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="spinner-border text-primary" role="status" *ngIf="isLoading">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="btn-group" *ngIf="!isLoading">
+            <button type="button" class="btn btn-danger" (click)="onDelete()" *ngIf="task.id">Excluir</button>
+            <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Salvar</button>
+        </div>
+    </div>
+</form>

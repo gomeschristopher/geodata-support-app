@@ -1,0 +1,37 @@
+<div class="row mb-3">
+    <div class="col-8">
+        <h1>Usuários</h1>
+    </div>
+    <div class="col">
+        <button class="btn btn-primary" (click)="onOpenUserFormModal()">Novo</button>
+    </div>
+</div>
+
+<div class="spinner-border text-primary" role="status" *ngIf="isLoading">
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+<div class="alert alert-danger" role="alert" *ngIf="errMsg">
+    {{ errMsg }}
+ </div>
+
+<table class="table" *ngIf="!isLoading">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users">
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                <button class="btn btn-primary" (click)="onOpenUserFormModal(user)">Editar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
